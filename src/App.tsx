@@ -9,10 +9,8 @@ import {
   Button,
   Avatar,
   Stack,
-  Paper,
 } from "@mui/material";
 import { useState } from "react";
-import AlarmOnIcon from "@mui/icons-material/AlarmOn";
 
 export type CommonProps = {
   open: boolean;
@@ -98,6 +96,7 @@ export function Header({
               disabled={false}
               color="primary"
               size={"small"}
+              sx={(theme) => ({ width: 160, justifyContent: "flex-start" })}
             >
               Search...
             </Button>
