@@ -1,4 +1,4 @@
-import { Menu, Search } from "@mui/icons-material";
+import { Close, Menu, Search } from "@mui/icons-material";
 import {
   AppBar,
   Box,
@@ -14,11 +14,11 @@ import {
   Typography,
   Chip,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { tags, videos } from "./mock/videos";
 import { VideoCard } from "./components/VideoCard";
 import { BarChartPro } from "@mui/x-charts-pro/BarChartPro";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 export type CommonProps = {
   open: boolean;
@@ -26,18 +26,10 @@ export type CommonProps = {
   closedDrawerWidth: number;
 };
 
-export type SidebarProps = CommonProps & {
-  toggleOpenDrawer: () => void;
-};
-
 function App() {
   const [open, setOpen] = useState<false | true>(true);
   const openedDrawerWidth = 400;
   const closedDrawerWidth = 0;
-
-  const toggleOpenDrawer = () => {
-    setOpen((prevState) => !prevState);
-  };
 
   const params = useParams();
 
@@ -51,7 +43,7 @@ function App() {
         <Header {...{ open, openedDrawerWidth, closedDrawerWidth }} />
         <Content {...{ open, openedDrawerWidth, closedDrawerWidth }} />
         <Sidebar
-          {...{ open, openedDrawerWidth, closedDrawerWidth, toggleOpenDrawer }}
+          {...{ open, openedDrawerWidth, closedDrawerWidth }}
         />
       </Box>
     </>
@@ -165,8 +157,16 @@ export function Sidebar({
   open,
   openedDrawerWidth,
   closedDrawerWidth,
-  toggleOpenDrawer,
-}: SidebarProps) {
+}: CommonProps) {
+  const navigate = useNavigate();
+
+  const onIconButtonClick = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      navigate("/");
+    },
+    []
+  );
+
   return (
     <Drawer
       sx={(theme) => ({
@@ -189,13 +189,13 @@ export function Sidebar({
         <IconButton
           color="primary"
           size="medium"
-          onClick={toggleOpenDrawer}
           sx={(theme) => ({
             position: "absolute",
             left: theme.spacing(1.5),
           })}
+          onClick={onIconButtonClick}
         >
-          <Menu />
+          <Close />
         </IconButton>
       </Toolbar>
       <Divider />
