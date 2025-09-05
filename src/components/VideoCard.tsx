@@ -67,7 +67,6 @@ export const VideoCard = ({ title, imageUrl }: VideoCardProps) => {
           }}
         >
           <PlayCircleFilledOutlined
-            color={"primary"}
             sx={(theme) => ({ width: 60, height: 60 })}
           />
         </Box>

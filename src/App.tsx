@@ -9,8 +9,11 @@ import {
   Button,
   Avatar,
   Stack,
+  Grid,
 } from "@mui/material";
 import { useState } from "react";
+import { videos } from "./mock/videos";
+import { VideoCard } from "./components/VideoCard";
 
 export type CommonProps = {
   open: boolean;
@@ -132,7 +135,17 @@ export const Content = ({
       }}
     >
       <Toolbar />
-      {<div>Content</div>}
+      <Grid container spacing={2} mt={4}>
+        {videos.map((video) => {
+          return (
+            <Grid size={{ xs: 12, lg: 3 }}>
+              <VideoCard
+                {...video}
+              />
+            </Grid>
+          );
+        })}
+      </Grid>
     </Box>
   );
 };
