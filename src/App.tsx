@@ -1,4 +1,4 @@
-import { Menu } from "@mui/icons-material";
+import { Menu, Search } from "@mui/icons-material";
 import {
   AppBar,
   Box,
@@ -8,6 +8,8 @@ import {
   Toolbar,
   Button,
   Avatar,
+  Stack,
+  Paper,
 } from "@mui/material";
 import { useState } from "react";
 import AlarmOnIcon from "@mui/icons-material/AlarmOn";
@@ -81,19 +83,25 @@ export function Header({
       })}
     >
       <Toolbar>
-        <img src="vite.svg" alt="" />
-        <Button
-          startIcon={<AlarmOnIcon />}
-          variant="contained"
-          disabled={false}
-          color="primary"
-          size="medium"
-        >
-          Button
-        </Button>
-        <Avatar sx={{ bgcolor: stringToColor(name), width: 60, height: 60 }}>
-          {name[0]}
-        </Avatar>
+        <Stack direction="row" spacing={2} alignItems="center">
+          <img src="vite.svg" alt="" />
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Button
+              startIcon={<Search />}
+              variant={"outlined"}
+              disabled={false}
+              color="primary"
+              size={"small"}
+            >
+              Search...
+            </Button>
+            <Avatar
+              sx={{ bgcolor: stringToColor(name), width: 40, height: 40 }}
+            >
+              {name[0]}
+            </Avatar>
+          </Stack>
+        </Stack>
       </Toolbar>
     </AppBar>
   );
