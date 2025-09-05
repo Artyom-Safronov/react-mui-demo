@@ -1,5 +1,5 @@
 import { PlayCircleFilledOutlined } from "@mui/icons-material";
-import { Paper, Typography } from "@mui/material";
+import { Paper, Typography, Box } from "@mui/material";
 import { useCallback } from "react";
 type VideoCardProps = {
   id: number;
@@ -25,11 +25,29 @@ export const VideoCard = ({ title, imageUrl }: VideoCardProps) => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           color: "white",
+          position: "relative",
+          cursor: "pointer",
         }}
         elevation={1}
       >
         <Typography variant={"overline"}>{title}</Typography>
-        <PlayCircleFilledOutlined color={"primary"} sx={(theme) => ({width: 60, height: 60})} />
+        <Box
+          sx={{
+            width: "60px",
+            height: "60px",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            margin: "auto",
+          }}
+        >
+          <PlayCircleFilledOutlined
+            color={"primary"}
+            sx={(theme) => ({ width: 60, height: 60 })}
+          />
+        </Box>
       </Paper>
     </div>
   );
