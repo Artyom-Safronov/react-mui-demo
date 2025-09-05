@@ -42,9 +42,7 @@ function App() {
       <Box sx={{ display: "flex" }}>
         <Header {...{ open, openedDrawerWidth, closedDrawerWidth }} />
         <Content {...{ open, openedDrawerWidth, closedDrawerWidth }} />
-        <Sidebar
-          {...{ open, openedDrawerWidth, closedDrawerWidth }}
-        />
+        <Sidebar {...{ open, openedDrawerWidth, closedDrawerWidth }} />
       </Box>
     </>
   );
@@ -167,6 +165,14 @@ export function Sidebar({
     []
   );
 
+  const params = useParams();
+
+  const video = videos[Number(params.id)];
+
+  const videoTags = tags.filter((tag) => {
+    return video?.tags.includes(tag.id);
+  });
+
   return (
     <Drawer
       sx={(theme) => ({
@@ -199,67 +205,60 @@ export function Sidebar({
         </IconButton>
       </Toolbar>
       <Divider />
-      <Box
-        sx={(theme) => ({
-          my: theme.spacing(2.5),
-          py: 3,
-          px: 2,
-          overflowX: "hidden",
-        })}
-      >
-        <VideoCard
-          id={0}
-          title="Exploring the Mountains"
-          description="A breathtaking journey through the rocky landscapes and peaks."
-          uploadDate="2024-07-15"
-          tags={[1, 3, 5]}
-          videoUrl="https://www.youtube.com/watch?v=Scxs7L0vhZ4"
-          imageUrl="images/0.jpg"
-          statsId={101}
-        />
+      {params.id ? (
+        <Box
+          sx={(theme) => ({
+            my: theme.spacing(2.5),
+            py: 3,
+            px: 2,
+            overflowX: "hidden",
+          })}
+        >
+          <VideoCard {...video} />
 
-        <Paper
-          sx={{ width: "100%", p: 1, boxSizing: "border-box", mt: 2 }}
-          elevation={1}
-        >
-          <Typography variant="subtitle1">Tags</Typography>
-          <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
-            {tags.map((tag) => {
-              return (
-                <Chip
-                  variant="filled"
-                  size={"small"}
-                  color="primary"
-                  label={tag.label}
-                  onDelete={() => {}}
-                />
-              );
-            })}
-          </Stack>
-        </Paper>
-        <Paper
-          sx={{
-            width: "100%",
-            height: "100%",
-            p: 1,
-            mt: 4,
-            boxSizing: "border-box",
-          }}
-          elevation={1}
-        >
-          <Typography variant="subtitle1">Views</Typography>
-          <BarChartPro
-            height={300}
-            series={[
-              { data: allViews, label: "All", stack: "total" },
-              { data: uniqueViews, label: "Unique", stack: "total" },
-            ]}
-            xAxis={[{ data: xLabels, zoom: true }]}
-            yAxis={[{ width: 50 }]}
-            showToolbar
-          />
-        </Paper>
-      </Box>
+          <Paper
+            sx={{ width: "100%", p: 1, boxSizing: "border-box", mt: 2 }}
+            elevation={1}
+          >
+            <Typography variant="subtitle1">Tags</Typography>
+            <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
+              {videoTags.map((tag) => {
+                return (
+                  <Chip
+                    variant="filled"
+                    size={"small"}
+                    color="primary"
+                    label={tag.label}
+                    onDelete={() => {}}
+                  />
+                );
+              })}
+            </Stack>
+          </Paper>
+          <Paper
+            sx={{
+              width: "100%",
+              height: "100%",
+              p: 1,
+              mt: 4,
+              boxSizing: "border-box",
+            }}
+            elevation={1}
+          >
+            <Typography variant="subtitle1">Views</Typography>
+            <BarChartPro
+              height={300}
+              series={[
+                { data: allViews, label: "All", stack: "total" },
+                { data: uniqueViews, label: "Unique", stack: "total" },
+              ]}
+              xAxis={[{ data: xLabels, zoom: true }]}
+              yAxis={[{ width: 50 }]}
+              showToolbar
+            />
+          </Paper>
+        </Box>
+      ) : null}
     </Drawer>
   );
 }
