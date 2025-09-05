@@ -6,8 +6,11 @@ import {
   Drawer,
   IconButton,
   Toolbar,
+  Button,
+  Avatar,
 } from "@mui/material";
 import { useState } from "react";
+import AlarmOnIcon from "@mui/icons-material/AlarmOn";
 
 export type CommonProps = {
   open: boolean;
@@ -44,6 +47,24 @@ export function Header({
   openedDrawerWidth,
   closedDrawerWidth,
 }: CommonProps) {
+  const name = "John Doe";
+  const stringToColor = (string: string) => {
+    let hash = 0;
+    let i;
+
+    for (i = 0; i < string.length; i += 1) {
+      hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    let color = "#";
+
+    for (i = 0; i < 3; i += 1) {
+      const value = (hash >> (i * 8)) & 0xff;
+      color += `00${value.toString(16)}`.slice(-2);
+    }
+
+    return color;
+  };
   return (
     <AppBar
       position="fixed"
@@ -61,6 +82,18 @@ export function Header({
     >
       <Toolbar>
         <img src="vite.svg" alt="" />
+        <Button
+          startIcon={<AlarmOnIcon />}
+          variant="contained"
+          disabled={false}
+          color="primary"
+          size="medium"
+        >
+          Button
+        </Button>
+        <Avatar sx={{ bgcolor: stringToColor(name), width: 60, height: 60 }}>
+          {name[0]}
+        </Avatar>
       </Toolbar>
     </AppBar>
   );
