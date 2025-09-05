@@ -1,6 +1,6 @@
 import { PlayCircleFilledOutlined } from "@mui/icons-material";
-import { Paper, Typography, Box } from "@mui/material";
-import { useCallback } from "react";
+import { Paper, Typography, Box, Fade } from "@mui/material";
+import React, { useCallback, useState } from "react";
 type VideoCardProps = {
   id: number;
   title: string;
@@ -13,6 +13,22 @@ type VideoCardProps = {
 };
 
 export const VideoCard = ({ title, imageUrl }: VideoCardProps) => {
+  const [fadeIn, setFadeIn] = useState<false | true>(false);
+
+  const onFadeMouseEnter = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      setFadeIn(true);
+    },
+    []
+  );
+
+  const onFadeMouseLeave = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      setFadeIn(false);
+    },
+    []
+  );
+
   return (
     <div>
       <Paper
@@ -29,8 +45,15 @@ export const VideoCard = ({ title, imageUrl }: VideoCardProps) => {
           cursor: "pointer",
         }}
         elevation={1}
+        onMouseLeave={onFadeMouseLeave}
+        onMouseEnter={onFadeMouseEnter}
       >
-        <Typography variant={"overline"}>{title}</Typography>
+        <Fade
+          in={fadeIn}
+          timeout={200}
+        >
+          <Typography variant={"overline"}>{title}</Typography>
+        </Fade>
         <Box
           sx={{
             width: "60px",
