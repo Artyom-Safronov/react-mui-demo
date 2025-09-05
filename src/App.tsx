@@ -209,21 +209,23 @@ export function Sidebar({
         />
 
         <Paper
-          sx={{ width: "100%", p: 1, boxSizing: "border-box" }}
+          sx={{ width: "100%", p: 1, boxSizing: "border-box", mt: 2 }}
           elevation={1}
         >
           <Typography variant="subtitle1">Tags</Typography>
-          {tags.map((tag) => {
-            return (
-              <Chip
-                variant="filled"
-                size="medium"
-                color="primary"
-                label="Chip Info"
-                onDelete={() => {}}
-              />
-            );
-          })}
+          <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
+            {tags.map((tag) => {
+              return (
+                <Chip
+                  variant="filled"
+                  size={"small"}
+                  color="primary"
+                  label={tag.label}
+                  onDelete={() => {}}
+                />
+              );
+            })}
+          </Stack>
         </Paper>
       </Box>
     </Drawer>
