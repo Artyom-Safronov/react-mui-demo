@@ -83,9 +83,15 @@ export function Header({
       })}
     >
       <Toolbar>
-        <Stack direction="row" spacing={2} alignItems="center">
+        <Stack
+          direction="row"
+          spacing={2}
+          alignItems="center"
+          flex={1}
+          justifyContent={"space-between"}
+        >
           <img src="vite.svg" alt="" />
-          <Stack direction="row" spacing={2} alignItems="center">
+          <Stack direction="row" spacing={4} alignItems="center">
             <Button
               startIcon={<Search />}
               variant={"outlined"}
