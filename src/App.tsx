@@ -10,9 +10,12 @@ import {
   Avatar,
   Stack,
   Grid,
+  Paper,
+  Typography,
+  Chip,
 } from "@mui/material";
 import { useState } from "react";
-import { videos } from "./mock/videos";
+import { tags, videos } from "./mock/videos";
 import { VideoCard } from "./components/VideoCard";
 
 export type CommonProps = {
@@ -139,9 +142,7 @@ export const Content = ({
         {videos.map((video) => {
           return (
             <Grid size={{ xs: 12, lg: 3 }}>
-              <VideoCard
-                {...video}
-              />
+              <VideoCard {...video} />
             </Grid>
           );
         })}
@@ -195,7 +196,36 @@ export function Sidebar({
           px: 2,
           overflowX: "hidden",
         })}
-      ></Box>
+      >
+        <VideoCard
+          id={0}
+          title="Exploring the Mountains"
+          description="A breathtaking journey through the rocky landscapes and peaks."
+          uploadDate="2024-07-15"
+          tags={[1, 3, 5]}
+          videoUrl="https://www.youtube.com/watch?v=Scxs7L0vhZ4"
+          imageUrl="images/0.jpg"
+          statsId={101}
+        />
+
+        <Paper
+          sx={{ width: "100%", p: 1, boxSizing: "border-box" }}
+          elevation={1}
+        >
+          <Typography variant="subtitle1">Tags</Typography>
+          {tags.map((tag) => {
+            return (
+              <Chip
+                variant="filled"
+                size="medium"
+                color="primary"
+                label="Chip Info"
+                onDelete={() => {}}
+              />
+            );
+          })}
+        </Paper>
+      </Box>
     </Drawer>
   );
 }
