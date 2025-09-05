@@ -21,8 +21,8 @@ export type SidebarProps = CommonProps & {
 
 function App() {
   const [open, setOpen] = useState<false | true>(true);
-  const openedDrawerWidth = 240;
-  const closedDrawerWidth = 64;
+  const openedDrawerWidth = 400;
+  const closedDrawerWidth = 0;
   const toggleOpenDrawer = () => {
     setOpen((prevState) => !prevState);
   };
@@ -30,10 +30,10 @@ function App() {
     <>
       <Box sx={{ display: "flex" }}>
         <Header {...{ open, openedDrawerWidth, closedDrawerWidth }} />
+        <Content {...{ open, openedDrawerWidth, closedDrawerWidth }} />
         <Sidebar
           {...{ open, openedDrawerWidth, closedDrawerWidth, toggleOpenDrawer }}
         />
-        <Content {...{ open, openedDrawerWidth, closedDrawerWidth }} />
       </Box>
     </>
   );
@@ -51,7 +51,7 @@ export function Header({
         width: open
           ? `calc(100% - ${openedDrawerWidth}px)`
           : `calc(100% - ${closedDrawerWidth}px)`,
-        marginLeft: open ? `${openedDrawerWidth}px` : `${closedDrawerWidth}px`,
+        marginRight: open ? `${openedDrawerWidth}px` : `${closedDrawerWidth}px`,
         background: theme.palette.background.default,
         boxShadow: "none",
         border: "none",
@@ -113,7 +113,7 @@ export function Sidebar({
       })}
       variant="permanent"
       open={open}
-      anchor="left"
+      anchor="right"
     >
       <Toolbar>
         <IconButton
