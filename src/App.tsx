@@ -1,4 +1,4 @@
-import { Close, Menu, Search } from "@mui/icons-material";
+import { Close, Search } from "@mui/icons-material";
 import {
   AppBar,
   Box,
@@ -15,7 +15,7 @@ import {
   Chip,
 } from "@mui/material";
 import React, { useEffect, useState, useCallback } from "react";
-import { tags, videos } from "./mock/videos";
+import { tags, videos, views } from "./mock/videos";
 import { VideoCard } from "./components/VideoCard";
 import { BarChartPro } from "@mui/x-charts-pro/BarChartPro";
 import { useParams, useNavigate } from "react-router-dom";
@@ -238,7 +238,6 @@ export function Sidebar({
           <Paper
             sx={{
               width: "100%",
-              height: "100%",
               p: 1,
               mt: 4,
               boxSizing: "border-box",
@@ -249,8 +248,16 @@ export function Sidebar({
             <BarChartPro
               height={300}
               series={[
-                { data: allViews, label: "All", stack: "total" },
-                { data: uniqueViews, label: "Unique", stack: "total" },
+                {
+                  data: views[Number(params.id)].map((data) => data.y1),
+                  label: "All",
+                  stack: "total",
+                },
+                {
+                  data: views[Number(params.id)].map((data) => data.y2),
+                  label: "Unique",
+                  stack: "total",
+                },
               ]}
               xAxis={[{ data: xLabels, zoom: true }]}
               yAxis={[{ width: 50 }]}
@@ -273,7 +280,3 @@ const xLabels = [
   "TikTok",
   "Snapchat",
 ];
-
-const uniqueViews = [2400, 1398, 9800, 3908, 4800, 3800];
-
-const allViews = [4000, 3000, 2000, 2780, 1890, 2390];
