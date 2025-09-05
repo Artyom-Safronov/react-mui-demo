@@ -1,10 +1,144 @@
-function App() {
+import { Menu } from "@mui/icons-material";
+import {
+  AppBar,
+  Box,
+  Divider,
+  Drawer,
+  IconButton,
+  Toolbar,
+} from "@mui/material";
+import { useState } from "react";
 
+export type CommonProps = {
+  open: boolean;
+  openedDrawerWidth: number;
+  closedDrawerWidth: number;
+};
+
+export type SidebarProps = CommonProps & {
+  toggleOpenDrawer: () => void;
+};
+
+function App() {
+  const [open, setOpen] = useState<false | true>(true);
+  const openedDrawerWidth = 240;
+  const closedDrawerWidth = 64;
+  const toggleOpenDrawer = () => {
+    setOpen((prevState) => !prevState);
+  };
   return (
     <>
-
+      <Box sx={{ display: "flex" }}>
+        <Header {...{ open, openedDrawerWidth, closedDrawerWidth }} />
+        <Sidebar
+          {...{ open, openedDrawerWidth, closedDrawerWidth, toggleOpenDrawer }}
+        />
+        <Content {...{ open, openedDrawerWidth, closedDrawerWidth }} />
+      </Box>
     </>
-  )
+  );
 }
 
-export default App
+export function Header({
+  open,
+  openedDrawerWidth,
+  closedDrawerWidth,
+}: CommonProps) {
+  return (
+    <AppBar
+      position="fixed"
+      sx={(theme) => ({
+        width: open
+          ? `calc(100% - ${openedDrawerWidth}px)`
+          : `calc(100% - ${closedDrawerWidth}px)`,
+        marginLeft: open ? `${openedDrawerWidth}px` : `${closedDrawerWidth}px`,
+        background: theme.palette.background.default,
+        boxShadow: "none",
+        border: "none",
+        borderBottom: `1px solid ${theme.palette.divider}`,
+        transition: "all 225ms",
+      })}
+    >
+      <Toolbar>
+        <img src="vite.svg" alt="" />
+      </Toolbar>
+    </AppBar>
+  );
+}
+
+export const Content = ({
+  open,
+  openedDrawerWidth,
+  closedDrawerWidth,
+}: CommonProps) => {
+  return (
+    <Box
+      component="main"
+      sx={{
+        width: open
+          ? `calc(100% - ${openedDrawerWidth}px)`
+          : `calc(100% - ${closedDrawerWidth}px)`,
+        flexGrow: 1,
+        bgcolor: "#fff",
+        padding: 2,
+        boxSizing: "border-box",
+        minHeight: "100vh",
+      }}
+    >
+      <Toolbar />
+      {<div>Content</div>}
+    </Box>
+  );
+};
+
+export function Sidebar({
+  open,
+  openedDrawerWidth,
+  closedDrawerWidth,
+  toggleOpenDrawer,
+}: SidebarProps) {
+  return (
+    <Drawer
+      sx={(theme) => ({
+        width: open ? openedDrawerWidth : closedDrawerWidth,
+        flexShrink: 0,
+        transition: "all 225ms",
+        overflowX: "hidden",
+        "& .MuiDrawer-paper": {
+          width: open ? openedDrawerWidth : closedDrawerWidth,
+          boxSizing: "border-box",
+          transition: "all 225ms",
+          background: theme.palette.background.default,
+        },
+      })}
+      variant="permanent"
+      open={open}
+      anchor="left"
+    >
+      <Toolbar>
+        <IconButton
+          color="primary"
+          size="medium"
+          onClick={toggleOpenDrawer}
+          sx={(theme) => ({
+            position: "absolute",
+            left: theme.spacing(1.5),
+          })}
+        >
+          <Menu />
+        </IconButton>
+      </Toolbar>
+      <Divider />
+      <Box
+        sx={(theme) => ({
+          my: theme.spacing(2.5),
+          py: 3,
+          px: 2,
+          overflowX: "hidden",
+        })}
+      ></Box>
+    </Drawer>
+  );
+}
+
+export default App;
