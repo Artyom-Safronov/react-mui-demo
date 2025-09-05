@@ -14,10 +14,11 @@ import {
   Typography,
   Chip,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { tags, videos } from "./mock/videos";
 import { VideoCard } from "./components/VideoCard";
 import { BarChartPro } from "@mui/x-charts-pro/BarChartPro";
+import { useParams } from "react-router-dom";
 
 export type CommonProps = {
   open: boolean;
@@ -33,9 +34,17 @@ function App() {
   const [open, setOpen] = useState<false | true>(true);
   const openedDrawerWidth = 400;
   const closedDrawerWidth = 0;
+
   const toggleOpenDrawer = () => {
     setOpen((prevState) => !prevState);
   };
+
+  const params = useParams();
+
+  useEffect(() => {
+    setOpen(Boolean(params.id));
+  }, [params.id]);
+
   return (
     <>
       <Box sx={{ display: "flex" }}>
@@ -229,7 +238,13 @@ export function Sidebar({
           </Stack>
         </Paper>
         <Paper
-          sx={{ width: "100%", height: "100%", p: 1, mt: 4, boxSizing: "border-box" }}
+          sx={{
+            width: "100%",
+            height: "100%",
+            p: 1,
+            mt: 4,
+            boxSizing: "border-box",
+          }}
           elevation={1}
         >
           <Typography variant="subtitle1">Views</Typography>

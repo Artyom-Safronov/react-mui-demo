@@ -1,6 +1,7 @@
 import { PlayCircleFilledOutlined } from "@mui/icons-material";
 import { Paper, Typography, Box, Fade } from "@mui/material";
 import React, { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 type VideoCardProps = {
   id: number;
   title: string;
@@ -12,14 +13,22 @@ type VideoCardProps = {
   statsId: number;
 };
 
-export const VideoCard = ({ title, imageUrl }: VideoCardProps) => {
+export const VideoCard = ({ title, imageUrl, id }: VideoCardProps) => {
+const onPaperClick = useCallback(
+  (event: React.MouseEvent<HTMLDivElement>) => {
+    navigate(`/${id}`)
+  },
+  [],
+);
   const [fadeIn, setFadeIn] = useState<false | true>(false);
-
+  
+  const navigate = useNavigate();
+  
   const onFadeMouseEnter = useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
       setFadeIn(true);
     },
-    []
+    [],
   );
 
   const onFadeMouseLeave = useCallback(
@@ -47,11 +56,9 @@ export const VideoCard = ({ title, imageUrl }: VideoCardProps) => {
         elevation={1}
         onMouseLeave={onFadeMouseLeave}
         onMouseEnter={onFadeMouseEnter}
+        onClick={onPaperClick}
       >
-        <Fade
-          in={fadeIn}
-          timeout={200}
-        >
+        <Fade in={fadeIn} timeout={200}>
           <Typography variant={"overline"}>{title}</Typography>
         </Fade>
         <Box
