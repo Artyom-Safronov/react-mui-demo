@@ -14,7 +14,7 @@ const meta = {
   decorators: [
     (Story) => {
       return (
-        <Box sx={(theme) => ({ width: 200, outline: "1px solid" })}>
+        <Box sx={(theme) => ({ width: 300 })}>
           {Story()}
         </Box>
       );
@@ -31,12 +31,12 @@ export const Default: Story = {
   },
   args: {
     id: 0,
-    title: "title",
-    description: "description",
-    uploadDate: "uploadDate",
-    tags: [],
-    videoUrl: "videoUrl",
-    imageUrl: "imageUrl",
-    statsId: 0,
+    title: "Exploring the Mountains",
+    description: "A breathtaking journey through the rocky landscapes and peaks.",
+    uploadDate: "2024-07-15",
+    tags: [1, 3, 5],
+    videoUrl: "https://www.youtube.com/watch?v=Scxs7L0vhZ4",
+    imageUrl: "images/0.jpg",
+    statsId: 101,
   },
 };
