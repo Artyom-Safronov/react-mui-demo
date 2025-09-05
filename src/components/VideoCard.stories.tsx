@@ -1,17 +1,23 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { VideoCard } from "./VideoCard";
+import { Box } from "@mui/material";
+import { useCallback } from "react";
 
 const meta = {
   title: "VideoCard",
   component: VideoCard,
   parameters: {
-    layout: "fullscreen",
+    layout: "centered",
   },
   argTypes: {},
   args: {},
   decorators: [
     (Story) => {
-      return Story();
+      return (
+        <Box sx={(theme) => ({ width: 200, outline: "1px solid" })}>
+          {Story()}
+        </Box>
+      );
     },
   ],
 } satisfies Meta<typeof VideoCard>;
