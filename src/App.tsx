@@ -1,4 +1,3 @@
-
 import {
   Box,
   AppBar,
@@ -6,10 +5,17 @@ import {
   Drawer,
   IconButton,
   Divider,
+  Button,
+  Tooltip,
+  Avatar,
+  Menu as MuiMaterialMenu,
+  MenuItem,
+  ListItemIcon,
 } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, MouseEvent } from "react";
 import { unstable_getScrollbarSize } from "@mui/utils";
-import { Menu } from "@mui/icons-material";
+import { Menu, PersonAdd, Settings, Logout } from "@mui/icons-material";
+import AlarmOnIcon from "@mui/icons-material/AlarmOn";
 type SidebarProps = CommonProps & {
   toggleOpenDrawer: () => void;
 };
@@ -40,7 +46,7 @@ function App() {
   );
 }
 
-export default App
+export default App;
 
 const useTakeScrollWidth = (open: boolean) => {
   const [width, setWidth] = useState(0);
@@ -149,7 +155,95 @@ function Header({ open, openedDrawerWidth, closedDrawerWidth }: CommonProps) {
     >
       <Toolbar>
         <img src="vite.svg" alt="" />
+        <Button
+          startIcon={<AlarmOnIcon />}
+          variant="contained"
+          disabled={false}
+          color="primary"
+          size="medium"
+        >
+          Button
+        </Button>
+        <ProfileMenu />
       </Toolbar>
     </AppBar>
   );
 }
+
+const ProfileMenu = () => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const openMenu = Boolean(anchorEl);
+  const handleOpen = (e: MouseEvent<HTMLElement>) =>
+    setAnchorEl(e.currentTarget);
+  const handleClose = () => setAnchorEl(null);
+
+  return (
+    <>
+      <Box>
+        <Tooltip title="Account settings">
+          <IconButton onClick={handleOpen} size="small">
+            <Avatar sx={{ width: 32, height: 32 }}>A</Avatar>
+          </IconButton>
+        </Tooltip>
+        <MuiMaterialMenu
+          id="account-menu"
+          anchorEl={anchorEl}
+          open={openMenu}
+          onClose={handleClose}
+          onClick={handleClose}
+          slotProps={{
+            paper: {
+              elevation: 0,
+              sx: {
+                mt: 1.5,
+                overflow: "visible",
+                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                "&:before": {
+                  content: '""',
+                  display: "block",
+                  position: "absolute",
+                  top: 0,
+                  right: 14,
+                  width: 10,
+                  height: 10,
+                  bgcolor: "background.paper",
+                  transform: "translateY(-50%) rotate(45deg)",
+                  zIndex: 0,
+                },
+              },
+            },
+          }}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        >
+          <MenuItem>
+            <Avatar sx={{ width: 24, height: 24, mr: 1 }} /> Profile
+          </MenuItem>
+          <MenuItem>
+            <Avatar sx={{ width: 24, height: 24, mr: 1 }} /> My account
+          </MenuItem>
+          <Divider />
+          <MenuItem>
+            <ListItemIcon>
+              <PersonAdd fontSize="small" />
+            </ListItemIcon>
+            Add another account
+          </MenuItem>
+          <MenuItem>
+            <ListItemIcon>
+              <Settings fontSize="small" />
+            </ListItemIcon>
+            Settings
+          </MenuItem>
+          <MenuItem>
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+            Logout
+          </MenuItem>
+        </MuiMaterialMenu>
+      </Box>
+    </>
+  );
+};
