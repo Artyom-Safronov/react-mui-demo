@@ -15,6 +15,7 @@ import {
   Typography,
   Grid,
   Chip,
+  Paper,
 } from "@mui/material";
 import { useState, useEffect, MouseEvent, useCallback } from "react";
 import { unstable_getScrollbarSize } from "@mui/utils";
@@ -22,6 +23,7 @@ import { Menu, PersonAdd, Settings, Logout, Search } from "@mui/icons-material";
 import AlarmOnIcon from "@mui/icons-material/AlarmOn";
 import { videos } from "./mock/videos";
 import { VideoCard } from "./components/VideoCard";
+import { BarChartPro } from "@mui/x-charts-pro/BarChartPro";
 type SidebarProps = CommonProps & {
   toggleOpenDrawer: () => void;
 };
@@ -144,6 +146,22 @@ function Sidebar({
             })}
           </Stack>
         </Box>
+        <Typography variant={"subtitle1"} mt={2}>Views</Typography>
+        <Paper
+          sx={{ width: "100%", height: "100%", p: 1, boxSizing: "border-box" }}
+          elevation={1}
+        >
+          <BarChartPro
+            height={300}
+            series={[
+              { data: allViews, label: "All", stack: "total" },
+              { data: uniqueViews, label: "Unique", stack: "total" },
+            ]}
+            xAxis={[{ data: xLabels, zoom: true }]}
+            yAxis={[{ width: 50 }]}
+            showToolbar
+          />
+        </Paper>
       </Box>
     </Drawer>
   );
@@ -305,3 +323,16 @@ const ProfileMenu = () => {
     </>
   );
 };
+
+const xLabels = [
+  "Google",
+  "Youtube",
+  "Instagram",
+  "Facebook",
+  "TikTok",
+  "Snapchat",
+];
+
+const uniqueViews = [2400, 1398, 9800, 3908, 4800, 3800];
+
+const allViews = [4000, 3000, 2000, 2780, 1890, 2390];
