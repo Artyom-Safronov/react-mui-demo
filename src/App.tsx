@@ -17,13 +17,13 @@ import {
   Chip,
   Paper,
 } from "@mui/material";
-import { useState, useEffect, MouseEvent, useCallback } from "react";
+import React, { useState, useEffect, MouseEvent, useCallback } from "react";
 import { unstable_getScrollbarSize } from "@mui/utils";
 import { Menu, PersonAdd, Settings, Logout, Search } from "@mui/icons-material";
-import AlarmOnIcon from "@mui/icons-material/AlarmOn";
 import { videos } from "./mock/videos";
 import { VideoCard } from "./components/VideoCard";
 import { BarChartPro } from "@mui/x-charts-pro/BarChartPro";
+import { useShowDialog } from "./hooks/useShowDialog";
 type SidebarProps = CommonProps & {
   toggleOpenDrawer: () => void;
 };
@@ -76,6 +76,25 @@ function Sidebar({
   closedDrawerWidth,
   toggleOpenDrawer,
 }: SidebarProps) {
+  const showDialog = useShowDialog();
+  const handleEvent = useCallback(
+    (_event: React.MouseEvent<HTMLButtonElement>) => {
+      showDialog({
+        title: "Delete",
+        description: "Are you sure you want to delete entity?",
+        actions: [
+          { label: "Cancel", value: false, color: "primary" },
+          {
+            label: "Delete",
+            value: true,
+            color: "error",
+            variant: "contained",
+          },
+        ],
+      });
+    },
+    [],
+  );
   const scrollBarSize = useTakeScrollWidth(open);
   return (
     <Drawer
@@ -140,13 +159,15 @@ function Sidebar({
                   size="medium"
                   color="primary"
                   label={chip}
-                  onDelete={() => {}}
+                  onDelete={handleEvent}
                 />
               );
             })}
           </Stack>
         </Box>
-        <Typography variant={"subtitle1"} mt={2}>Views</Typography>
+        <Typography variant={"subtitle1"} mt={2}>
+          Views
+        </Typography>
         <Paper
           sx={{ width: "100%", height: "100%", p: 1, boxSizing: "border-box" }}
           elevation={1}
