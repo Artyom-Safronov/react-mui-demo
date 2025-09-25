@@ -9,6 +9,7 @@ import {
   Button,
   Box,
 } from "@mui/material";
+import { PlayCircleRounded } from "@mui/icons-material";
 type VideoCardProps = {
   id: number;
   title: string;
@@ -24,14 +25,27 @@ export const VideoCard = ({imageUrl, title}: VideoCardProps) => {
   return (
     <div>
       <Box sx={{ width: 360 }}>
-        <Card >
-          <CardActionArea onClick={() => {}}>
+        <Card>
+          <CardActionArea onClick={() => {}} sx={{position: "relative"}}>
             <CardMedia
               component="img"
               height="200"
               image={imageUrl}
               alt="City"
             />
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                display: "flex",
+              }}
+            >
+              <PlayCircleRounded
+                sx={{ width: 60, height: 60, color: "white" }}
+              />
+            </Box>
           </CardActionArea>
         </Card>
         <Typography variant="body2" color="text.secondary">
