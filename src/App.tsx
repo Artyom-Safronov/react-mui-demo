@@ -14,6 +14,7 @@ import {
   Stack,
   Typography,
   Grid,
+  Chip,
 } from "@mui/material";
 import { useState, useEffect, MouseEvent, useCallback } from "react";
 import { unstable_getScrollbarSize } from "@mui/utils";
@@ -33,7 +34,7 @@ type CommonProps = {
 function App() {
   const [open, setOpen] = useState<false | true>(true);
   const scrollBarSize = useTakeScrollWidth(open);
-  const openedDrawerWidth = 240 + scrollBarSize;
+  const openedDrawerWidth = 400 + scrollBarSize;
   const closedDrawerWidth = 64 + scrollBarSize;
   const toggleOpenDrawer = () => {
     setOpen((prevState) => !prevState);
@@ -116,7 +117,34 @@ function Sidebar({
           px: 2,
           overflowX: "hidden",
         })}
-      ></Box>
+      >
+        <VideoCard
+          id={1}
+          title="Street Food Tour in Bangkok"
+          description="Sampling the most delicious and unique street food in Bangkok."
+          uploadDate="2024-08-02"
+          tags={[2, 6]}
+          videoUrl="https://www.youtube.com/watch?v=3p8G3M4bqDs"
+          imageUrl="images/1.jpg"
+          statsId={102}
+        />
+        <Box mt={2}>
+          <Typography variant={"subtitle1"}>Tags</Typography>
+          <Stack spacing={1} direction="row" mt={1}>
+            {["Chip 1", "Chip&Chip", "Chip the third"].map((chip) => {
+              return (
+                <Chip
+                  variant="filled"
+                  size="medium"
+                  color="primary"
+                  label={chip}
+                  onDelete={() => {}}
+                />
+              );
+            })}
+          </Stack>
+        </Box>
+      </Box>
     </Drawer>
   );
 }
