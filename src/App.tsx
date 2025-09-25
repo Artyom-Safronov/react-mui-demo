@@ -19,13 +19,21 @@ import {
 } from "@mui/material";
 import React, { useState, useEffect, MouseEvent, useCallback } from "react";
 import { unstable_getScrollbarSize } from "@mui/utils";
-import { Menu, PersonAdd, Settings, Logout, Search } from "@mui/icons-material";
-import { videos } from "./mock/videos";
+import {
+  Menu,
+  PersonAdd,
+  Settings,
+  Logout,
+  Search,
+  ArrowForward,
+} from "@mui/icons-material";
+import { tags, videos } from "./mock/videos";
 import { VideoCard } from "./components/VideoCard";
 import { BarChartPro } from "@mui/x-charts-pro/BarChartPro";
 import { useShowDialog } from "./hooks/useShowDialog";
+import { useParams, useNavigate } from "react-router-dom";
 type SidebarProps = CommonProps & {
-  toggleOpenDrawer: () => void;
+  // toggleOpenDrawer: () => void;
 };
 
 type CommonProps = {
@@ -34,20 +42,19 @@ type CommonProps = {
   closedDrawerWidth: number;
 };
 function App() {
-  const [open, setOpen] = useState<false | true>(true);
+  const params = useParams();
+  const open = Boolean(params?.id);
   const scrollBarSize = useTakeScrollWidth(open);
   const openedDrawerWidth = 400 + scrollBarSize;
-  const closedDrawerWidth = 64 + scrollBarSize;
-  const toggleOpenDrawer = () => {
-    setOpen((prevState) => !prevState);
-  };
+  const closedDrawerWidth = 0;
+  
   return (
     <>
       <Box sx={{ display: "flex" }}>
         <Header {...{ open, openedDrawerWidth, closedDrawerWidth }} />
         <Content {...{ open, openedDrawerWidth, closedDrawerWidth }} />
         <Sidebar
-          {...{ open, openedDrawerWidth, closedDrawerWidth, toggleOpenDrawer }}
+          {...{ open, openedDrawerWidth, closedDrawerWidth }}
         />
       </Box>
     </>
@@ -74,8 +81,15 @@ function Sidebar({
   open,
   openedDrawerWidth,
   closedDrawerWidth,
-  toggleOpenDrawer,
 }: SidebarProps) {
+  const navigate = useNavigate();
+  const onIconButtonClick = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      navigate('/')
+    },
+    [],
+  );
+  const params = useParams();
   const showDialog = useShowDialog();
   const handleEvent = useCallback(
     (_event: React.MouseEvent<HTMLButtonElement>) => {
@@ -96,6 +110,9 @@ function Sidebar({
     [],
   );
   const scrollBarSize = useTakeScrollWidth(open);
+
+  const video = videos[Number(params.id)];
+
   return (
     <Drawer
       sx={(theme) => ({
@@ -121,13 +138,14 @@ function Sidebar({
         <IconButton
           color="primary"
           size="medium"
-          onClick={toggleOpenDrawer}
+          onClick={onIconButtonClick}
           sx={(theme) => ({
             position: "absolute",
             left: theme.spacing(1.5),
           })}
         >
-          <Menu />
+          {/* <Menu /> */}
+          <ArrowForward />
         </IconButton>
       </Toolbar>
       <Divider />
@@ -139,50 +157,52 @@ function Sidebar({
           overflowX: "hidden",
         })}
       >
-        <VideoCard
-          id={1}
-          title="Street Food Tour in Bangkok"
-          description="Sampling the most delicious and unique street food in Bangkok."
-          uploadDate="2024-08-02"
-          tags={[2, 6]}
-          videoUrl="https://www.youtube.com/watch?v=3p8G3M4bqDs"
-          imageUrl="images/1.jpg"
-          statsId={102}
-        />
-        <Box mt={2}>
-          <Typography variant={"subtitle1"}>Tags</Typography>
-          <Stack spacing={1} direction="row" mt={1}>
-            {["Chip 1", "Chip&Chip", "Chip the third"].map((chip) => {
-              return (
-                <Chip
-                  variant="filled"
-                  size="medium"
-                  color="primary"
-                  label={chip}
-                  onDelete={handleEvent}
-                />
-              );
-            })}
-          </Stack>
-        </Box>
-        <Typography variant={"subtitle1"} mt={2}>
-          Views
-        </Typography>
-        <Paper
-          sx={{ width: "100%", height: "100%", p: 1, boxSizing: "border-box" }}
-          elevation={1}
-        >
-          <BarChartPro
-            height={300}
-            series={[
-              { data: allViews, label: "All", stack: "total" },
-              { data: uniqueViews, label: "Unique", stack: "total" },
-            ]}
-            xAxis={[{ data: xLabels, zoom: true }]}
-            yAxis={[{ width: 50 }]}
-            showToolbar
-          />
-        </Paper>
+        {video && open ? (
+          <>
+            <VideoCard {...video} />
+            <Box mt={2}>
+              <Typography variant={"subtitle1"}>Tags</Typography>
+              <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
+                {tags
+                  .filter((tag) => video.tags.includes(tag.id))
+                  .map((chip) => {
+                    return (
+                      <Chip
+                        variant="filled"
+                        size="medium"
+                        color="primary"
+                        label={chip.label}
+                        onDelete={handleEvent}
+                      />
+                    );
+                  })}
+              </Stack>
+            </Box>
+            <Typography variant={"subtitle1"} mt={2}>
+              Views
+            </Typography>
+            <Paper
+              sx={{
+                width: "100%",
+                height: "100%",
+                p: 1,
+                boxSizing: "border-box",
+              }}
+              elevation={1}
+            >
+              <BarChartPro
+                height={300}
+                series={[
+                  { data: allViews, label: "All", stack: "total" },
+                  { data: uniqueViews, label: "Unique", stack: "total" },
+                ]}
+                xAxis={[{ data: xLabels, zoom: true }]}
+                yAxis={[{ width: 50 }]}
+                showToolbar
+              />
+            </Paper>
+          </>
+        ) : null}
       </Box>
     </Drawer>
   );
@@ -204,17 +224,15 @@ function Content({ open, openedDrawerWidth, closedDrawerWidth }: CommonProps) {
       }}
     >
       <Toolbar />
-      
+
       <Grid container spacing={2}>
         {videos.map((video) => {
-            return (
-              <Grid size={{ xs: 12, lg: 3 }} key={video.id}>
-                <VideoCard
-                  {...video}
-                />
-              </Grid>
-            );
-          })}
+          return (
+            <Grid size={{ xs: 12, lg: 3 }} key={video.id}>
+              <VideoCard {...video} />
+            </Grid>
+          );
+        })}
       </Grid>
     </Box>
   );

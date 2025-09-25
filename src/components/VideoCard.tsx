@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { PlayCircleRounded } from "@mui/icons-material";
 import React, { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 type VideoCardProps = {
   id: number;
   title: string;
@@ -22,27 +23,38 @@ type VideoCardProps = {
   statsId: number;
 };
 
-export const VideoCard = ({ imageUrl, title }: VideoCardProps) => {
+export const VideoCard = ({ imageUrl, title, id }: VideoCardProps) => {
+  const navigate = useNavigate();
+  const onCardActionAreaClick = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      navigate(`/${id}`)
+    },
+    [],
+  );
   const [fadeIn, setFadeIn] = useState<false | true>(false);
+
 
   const onCardMouseLeave = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       setFadeIn(false);
     },
-    []
+    [],
   );
   const onCardMouseEnter = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       setFadeIn(true);
     },
-    []
+    [],
   );
 
   return (
     <div>
       <Box sx={{ maxwidth: 360 }}>
         <Card onMouseEnter={onCardMouseEnter} onMouseLeave={onCardMouseLeave}>
-          <CardActionArea onClick={() => {}} sx={{ position: "relative" }}>
+          <CardActionArea
+            onClick={onCardActionAreaClick}
+            sx={{ position: "relative" }}
+          >
             <CardMedia
               component="img"
               height="200"

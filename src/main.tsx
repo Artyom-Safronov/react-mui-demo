@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import { DialogProvider } from "./DialogProvider.tsx";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { blue, grey, red, green } from "@mui/material/colors";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const customTheme = createTheme({
   cssVariables: true,
@@ -113,8 +114,13 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <DialogProvider>
       <ThemeProvider theme={customTheme}>
-        <App />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<App />} />
+            <Route path="/:id" element={<App />} />
+          </Routes>
+        </BrowserRouter>
       </ThemeProvider>
     </DialogProvider>
-  </StrictMode>
+  </StrictMode>,
 );
