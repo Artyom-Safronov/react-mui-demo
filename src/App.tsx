@@ -11,6 +11,8 @@ import {
   Menu as MuiMaterialMenu,
   MenuItem,
   ListItemIcon,
+  Stack,
+  Typography,
 } from "@mui/material";
 import { useState, useEffect, MouseEvent } from "react";
 import { unstable_getScrollbarSize } from "@mui/utils";
@@ -154,17 +156,26 @@ function Header({ open, openedDrawerWidth, closedDrawerWidth }: CommonProps) {
       })}
     >
       <Toolbar>
-        <img src="vite.svg" alt="" />
-        <Button
-          startIcon={<AlarmOnIcon />}
-          variant="contained"
-          disabled={false}
-          color="primary"
-          size="medium"
+        <Stack
+          direction="row"
+          spacing={2}
+          justifyContent="space-between"
+          sx={{ width: "100%" }}
         >
-          Button
-        </Button>
-        <ProfileMenu />
+          <img src="vite.svg" alt="" />
+          <Stack direction="row" spacing={2}>
+            <Button
+              startIcon={<AlarmOnIcon />}
+              variant="contained"
+              disabled={false}
+              color="primary"
+              size="medium"
+            >
+              Button
+            </Button>
+            <ProfileMenu />
+          </Stack>
+        </Stack>
       </Toolbar>
     </AppBar>
   );
