@@ -13,11 +13,14 @@ import {
   ListItemIcon,
   Stack,
   Typography,
+  Grid,
 } from "@mui/material";
 import { useState, useEffect, MouseEvent, useCallback } from "react";
 import { unstable_getScrollbarSize } from "@mui/utils";
 import { Menu, PersonAdd, Settings, Logout, Search } from "@mui/icons-material";
 import AlarmOnIcon from "@mui/icons-material/AlarmOn";
+import { videos } from "./mock/videos";
+import { VideoCard } from "./components/VideoCard";
 type SidebarProps = CommonProps & {
   toggleOpenDrawer: () => void;
 };
@@ -134,7 +137,18 @@ function Content({ open, openedDrawerWidth, closedDrawerWidth }: CommonProps) {
       }}
     >
       <Toolbar />
-      {<div>Content</div>}
+      
+      <Grid container spacing={2}>
+        {videos.map((video) => {
+            return (
+              <Grid size={{ xs: 12, lg: 3 }} key={video.id}>
+                <VideoCard
+                  {...video}
+                />
+              </Grid>
+            );
+          })}
+      </Grid>
     </Box>
   );
 }

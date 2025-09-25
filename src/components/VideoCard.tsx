@@ -23,7 +23,7 @@ type VideoCardProps = {
 };
 
 export const VideoCard = ({ imageUrl, title }: VideoCardProps) => {
-  const [fadeIn, setFadeIn] = useState<false | true>(true);
+  const [fadeIn, setFadeIn] = useState<false | true>(false);
 
   const onCardMouseLeave = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
@@ -40,7 +40,7 @@ export const VideoCard = ({ imageUrl, title }: VideoCardProps) => {
 
   return (
     <div>
-      <Box sx={{ width: 360 }}>
+      <Box sx={{ maxwidth: 360 }}>
         <Card onMouseEnter={onCardMouseEnter} onMouseLeave={onCardMouseLeave}>
           <CardActionArea onClick={() => {}} sx={{ position: "relative" }}>
             <CardMedia
