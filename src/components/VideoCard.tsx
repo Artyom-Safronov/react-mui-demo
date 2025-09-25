@@ -1,4 +1,3 @@
-
 import {
   Card,
   CardActionArea,
@@ -8,8 +7,10 @@ import {
   CardActions,
   Button,
   Box,
+  Fade,
 } from "@mui/material";
 import { PlayCircleRounded } from "@mui/icons-material";
+import React, { useState, useCallback } from "react";
 type VideoCardProps = {
   id: number;
   title: string;
@@ -21,31 +22,48 @@ type VideoCardProps = {
   statsId: number;
 };
 
-export const VideoCard = ({imageUrl, title}: VideoCardProps) => {
+export const VideoCard = ({ imageUrl, title }: VideoCardProps) => {
+  const [fadeIn, setFadeIn] = useState<false | true>(true);
+
+  const onCardMouseLeave = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      setFadeIn(false);
+    },
+    []
+  );
+  const onCardMouseEnter = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      setFadeIn(true);
+    },
+    []
+  );
+
   return (
     <div>
       <Box sx={{ width: 360 }}>
-        <Card>
-          <CardActionArea onClick={() => {}} sx={{position: "relative"}}>
+        <Card onMouseEnter={onCardMouseEnter} onMouseLeave={onCardMouseLeave}>
+          <CardActionArea onClick={() => {}} sx={{ position: "relative" }}>
             <CardMedia
               component="img"
               height="200"
               image={imageUrl}
               alt="City"
             />
-            <Box
-              sx={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                display: "flex",
-              }}
-            >
-              <PlayCircleRounded
-                sx={{ width: 60, height: 60, color: "white" }}
-              />
-            </Box>
+            <Fade in={fadeIn} timeout={200}>
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  display: "flex",
+                }}
+              >
+                <PlayCircleRounded
+                  sx={{ width: 60, height: 60, color: "white" }}
+                />
+              </Box>
+            </Fade>
           </CardActionArea>
         </Card>
         <Typography variant="body2" color="text.secondary">
