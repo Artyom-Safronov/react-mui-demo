@@ -14,9 +14,9 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useState, useEffect, MouseEvent } from "react";
+import { useState, useEffect, MouseEvent, useCallback } from "react";
 import { unstable_getScrollbarSize } from "@mui/utils";
-import { Menu, PersonAdd, Settings, Logout } from "@mui/icons-material";
+import { Menu, PersonAdd, Settings, Logout, Search } from "@mui/icons-material";
 import AlarmOnIcon from "@mui/icons-material/AlarmOn";
 type SidebarProps = CommonProps & {
   toggleOpenDrawer: () => void;
@@ -163,15 +163,20 @@ function Header({ open, openedDrawerWidth, closedDrawerWidth }: CommonProps) {
           sx={{ width: "100%" }}
         >
           <img src="vite.svg" alt="" />
-          <Stack direction="row" spacing={2}>
+          <Stack direction="row" spacing={2} alignItems={"center"}>
             <Button
-              startIcon={<AlarmOnIcon />}
-              variant="contained"
+              startIcon={<Search />}
+              variant={"outlined"}
               disabled={false}
               color="primary"
-              size="medium"
+              size={"small"}
+              sx={(theme) => ({
+                height: 32,
+                paddingRight: 8,
+                textTransform: "capitalize",
+              })}
             >
-              Button
+              Search...
             </Button>
             <ProfileMenu />
           </Stack>
